@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Providers\DependencyInjection\DependencyInjection;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,9 +12,11 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
-        //
+        DependencyInjection::providers($this->app)->each(function (DependencyInjection $di): void {
+            $di->configure();
+        });
     }
 
     /**
