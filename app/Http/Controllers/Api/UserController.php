@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UserCreateRequest;
+use App\Jobs\User\UserRegisterJob;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -28,6 +29,7 @@ class UserController extends Controller
     {
         /** @var User $user */
         $user = User::query()->create($request->all());
+        UserRegisterJob::dispatch($user);
         return response()->json([
             'access_token' => auth()->login($user),
             'token_type' => 'bearer'
