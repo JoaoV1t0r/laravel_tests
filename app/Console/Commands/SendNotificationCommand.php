@@ -34,9 +34,10 @@ class SendNotificationCommand extends Command
     public function handle()
     {
         $jobs = [];
-        $this->withProgressBar(User::all(), function (User $user) {
+        $users = User::all()->whereIn('id', [1, 2, 3, 4]);
+        foreach ($users as $user) {
             $jobs[] = new WelcomeNotificationJob($user);
-        });
-        Bus::batch($jobs);
+        }
+        Bus::batch($jobs)->dispatch();
     }
 }
