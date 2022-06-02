@@ -19,7 +19,15 @@ use App\Http\Controllers\Api\UserController;
 //     Route::post('user', 'store')->name('user.store');
 // });
 
-Route::post('user', [UserController::class, 'store'])->name('user.store');
+Route::prefix('users/')->group(function () {
+    Route::get('', [UserController::class, 'index'])->name('users.list');
+    Route::post('', [UserController::class, 'store'])->name('users.store');
+    Route::put('', [UserController::class, 'update'])->name('users.update');
+    Route::delete('{userUuid}', [UserController::class, 'delete'])->name('users.delete');
+    Route::get('confirm-email/{userUuid}', function () {
+        echo route('users.confirm_email', ['userUuid' => 'lihv'], true);
+    })->name('users.confirm_email');
+});
 
 Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::post('logout', [AuthController::class, 'logout']);

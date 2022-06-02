@@ -3,70 +3,96 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\UserCreateRequest;
-use App\Jobs\User\UserRegisterJob;
-use App\Models\User;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use App\Support\Models\BaseResponse;
+use App\Exceptions\SystemDefaultException;
+use App\Http\Requests\User\UserStoreRequest;
+use App\Http\Requests\Users\UserDeleteRequest;
+use App\Http\Requests\Users\UserUpdateRequest;
+use Symfony\Component\HttpFoundation\Response;
+use App\Http\Requests\Users\UserListingRequest;
+use App\Domains\Users\Services\Abstract\IUsersStoreService;
+use App\Domains\Users\Services\Abstract\IUsersDeleteService;
+use App\Domains\Users\Services\Abstract\IUsersUpdateService;
+use App\Domains\Users\Services\Abstract\IUsersListingService;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-    public function index()
-    {
-        //
-    }
+    private IUsersListingService $usersListingService;
+    private IUsersStoreService $usersStoreService;
+    private IUsersUpdateService $usersUpdateService;
+    private IUsersDeleteService $usersDeleteService;
 
     /**
-     * Store a newly created resource in storage.
+     * @param IUsersListingService $usersListingService
+     * @param IUsersStoreService $usersStoreService
+     * @param IUsersUpdateService $usersUpdateService
+     * @param IUsersDeleteService $usersDeleteService
      */
-    public function store(UserCreateRequest $request): JsonResponse
-    {
-        /** @var User $user */
-        $user = User::query()->create($request->all());
-        UserRegisterJob::dispatch($user);
-        return response()->json([
-            'access_token' => auth()->login($user),
-            'token_type' => 'bearer'
-        ]);
+    public function __construct(
+        IUsersListingService $usersListingService,
+        IUsersStoreService   $usersStoreService,
+        IUsersUpdateService  $usersUpdateService,
+        IUsersDeleteService  $usersDeleteService,
+    ) {
+        $this->usersListingService = $usersListingService;
+        $this->usersStoreService = $usersStoreService;
+        $this->usersUpdateService = $usersUpdateService;
+        $this->usersDeleteService = $usersDeleteService;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function show($id)
+
+    public function index(UserListingRequest $request): Response
     {
-        //
+        try {
+            $userListing = $request->hasPagination()
+                ? $this->usersListingService->getUsersPaginated($request)
+                : $this->usersListingService->getUsersListing();
+            return BaseResponse::builder()
+                ->setMessage('Successfully listing user!')
+                ->setData($userListing)
+                ->response();
+        } catch (SystemDefaultException $exception) {
+            return $exception->response();
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param int $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
+    public function store(UserStoreRequest $request): Response
     {
-        //
+        try {
+            $newUser = $this->usersStoreService->storeUser($request);
+            return BaseResponse::builder()
+                ->setMessage('Successfully create user!')
+                ->setData($newUser)
+                ->response();
+        } catch (SystemDefaultException $exception) {
+            return $exception->response();
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function destroy($id)
+    public function update(UserUpdateRequest $request): Response
     {
-        //
+        try {
+            $updateUser = $this->usersUpdateService->userUpdate($request);
+            return BaseResponse::builder()
+                ->setMessage('Successfully update user!')
+                ->setData($updateUser)
+                ->response();
+        } catch (SystemDefaultException $exception) {
+            return $exception->response();
+        }
+    }
+
+    public function delete(UserDeleteRequest $request): Response
+    {
+        try {
+            $this->usersDeleteService->userDelete($request);
+            return BaseResponse::builder()
+                ->setMessage('Successfully delete user!')
+                ->setData(true)
+                ->setStatusCode(202)
+                ->response();
+        } catch (SystemDefaultException $exception) {
+            return $exception->response();
+        }
     }
 }

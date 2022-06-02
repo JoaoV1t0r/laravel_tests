@@ -6,7 +6,7 @@ use App\Http\Requests\Request;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class UserCreateRequest extends Request
+class UserStoreRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.

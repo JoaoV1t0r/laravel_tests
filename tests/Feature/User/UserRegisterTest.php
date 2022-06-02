@@ -5,9 +5,12 @@ namespace Tests\Feature\User;
 use App\Jobs\User\UserRegisterJob;
 use Tests\TestCase;
 use App\Models\User;
+use App\Notifications\User\UserConfirmEmailNotification;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Testing\Fakes\NotificationFake;
 use Symfony\Component\Console\Helper\ProgressBar;
 
 class UserRegisterTest extends TestCase
@@ -19,7 +22,7 @@ class UserRegisterTest extends TestCase
      */
     public function it_should_be_able_to_register_as_a_new_user()
     {
-        Bus::fake();
+        Notification::fake();
 
         $data = [
             'name' => $this->faker->name(),
@@ -27,15 +30,16 @@ class UserRegisterTest extends TestCase
             'password' => 'password',
         ];
 
-        $response = $this->post(route('user.store'), $data);
+        $response = $this->post(route('users.store'), $data);
 
         $response->assertOk();
 
-        $this->assertAuthenticatedAs(User::first(), 'api');
+        $this->assertDatabaseHas('users', [
+            'name' => $data['name'],
+            'email' => $data['email'],
+        ]);
 
-        $this->assertDatabaseHas('users', $data);
-
-        Bus::assertDispatched(UserRegisterJob::class);
+        Notification::assertSentTo([User::query()->where('email', $data['email'])->first()], UserConfirmEmailNotification::class);
     }
 
     /**
@@ -51,7 +55,7 @@ class UserRegisterTest extends TestCase
             'password' => 'password',
         ];
 
-        $response = $this->post(route('user.store'), $data);
+        $response = $this->post(route('users.store'), $data);
 
         $response->assertStatus(400);
 
@@ -69,7 +73,7 @@ class UserRegisterTest extends TestCase
             'password' => 'password',
         ];
 
-        $response = $this->post(route('user.store'), $data);
+        $response = $this->post(route('users.store'), $data);
 
         $response->assertStatus(400);
 
@@ -87,7 +91,7 @@ class UserRegisterTest extends TestCase
             'password' => '',
         ];
 
-        $response = $this->post(route('user.store'), $data);
+        $response = $this->post(route('users.store'), $data);
 
         $response->assertStatus(400);
 
@@ -105,7 +109,7 @@ class UserRegisterTest extends TestCase
             'password' => 'password',
         ];
 
-        $response = $this->post(route('user.store'), $data);
+        $response = $this->post(route('users.store'), $data);
 
         $response->assertStatus(400);
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f67c63c3fe432504e7e716daf6805dde",
+    "content-hash": "0222dbfd8d73b6f4dececd3c44f99eed",
     "packages": [
         {
             "name": "brick/math",
@@ -5631,6 +5631,59 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.10.0"
             },
             "time": "2021-03-09T10:59:23+00:00"
+        },
+        {
+            "name": "your-app-rocks/eloquent-uuid",
+            "version": "2.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/YourAppRocks/eloquent-uuid.git",
+                "reference": "3f1740973fb7c2da4831eeaf35d156773620c70b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/YourAppRocks/eloquent-uuid/zipball/3f1740973fb7c2da4831eeaf35d156773620c70b",
+                "reference": "3f1740973fb7c2da4831eeaf35d156773620c70b",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1 || ^8.0",
+                "ramsey/uuid": "^3.9 || ^4.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.16",
+                "orchestra/testbench": "^3.5 || ^4.0 || ^5.0 || ^6.0",
+                "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "YourAppRocks\\EloquentUuid\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "João Roberto P. Borges",
+                    "email": "joaorobertopb@gmail.com"
+                }
+            ],
+            "description": "Adds support for UUID generation automatically for Models Eloquents.",
+            "homepage": "https://yourapp.rocks",
+            "keywords": [
+                "YourApp.Rocks",
+                "eloquent-uuid",
+                "universal unique id",
+                "uuid"
+            ],
+            "support": {
+                "issues": "https://github.com/YourAppRocks/eloquent-uuid/issues",
+                "source": "https://github.com/YourAppRocks/eloquent-uuid/tree/2.5.0"
+            },
+            "time": "2021-02-25T01:21:12+00:00"
         }
     ],
     "packages-dev": [

@@ -20,8 +20,10 @@ class UserFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
+            'uuid' => Str::uuid(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
+            'is_active' => true,
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
         ];

@@ -4,8 +4,8 @@
 namespace App\Providers\DependencyInjection;
 
 
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Collection;
+use Illuminate\Contracts\Foundation\Application;
 
 abstract class DependencyInjection
 {
@@ -19,7 +19,7 @@ abstract class DependencyInjection
     public static function providers(Application $app): Collection
     {
         return collect([
-
+            new UsersDi($app),
         ]);
     }
 
