@@ -2,21 +2,18 @@
 
 namespace Tests\Feature\User;
 
-use App\Jobs\User\UserRegisterJob;
-use Tests\TestCase;
 use App\Models\User;
 use App\Notifications\User\UserConfirmEmailNotification;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Bus;
+use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Testing\Fakes\NotificationFake;
-use Symfony\Component\Console\Helper\ProgressBar;
+use Tests\TestCase;
 
 class UserRegisterTest extends TestCase
 {
     use RefreshDatabase;
     use WithFaker;
+
     /**
      * @test
      */
@@ -51,7 +48,7 @@ class UserRegisterTest extends TestCase
 
         $data = [
             'name' => $this->faker->name(),
-            'email' => $user->email,
+            'email' => $user['email'],
             'password' => 'password',
         ];
 

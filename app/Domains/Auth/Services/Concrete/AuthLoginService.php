@@ -28,9 +28,7 @@ class AuthLoginService implements IAuthLoginService
         return [
             'access_token' => $this->token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL(),
-            'role_name' => auth()->user()->role->slug,
-            'role_uuid' => auth()->user()->role->uuid
+            'expires_in' => auth()->factory()->getTTL() * 60
         ];
     }
 

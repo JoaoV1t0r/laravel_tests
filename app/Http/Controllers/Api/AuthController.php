@@ -2,72 +2,90 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\JsonResponse;
+use App\Domains\Auth\Services\Abstract\IAuthLoginService;
+use App\Domains\Auth\Services\Abstract\IAuthMyUserService;
+use App\Domains\Auth\Services\Abstract\IAuthRefreshTokenService;
+use App\Exceptions\SystemDefaultException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\AuthLoginRequest;
+use App\Support\Models\BaseResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
+    private IAuthLoginService $authLoginService;
+    private IAuthMyUserService $authMyUserService;
+    private IAuthRefreshTokenService $authRefreshTokenService;
+
     /**
-     * Get a JWT via given credentials.
-     *
-     * @return JsonResponse
+     * @param IAuthLoginService $authLoginService
+     * @param IAuthMyUserService $authMyUserService
+     * @param IAuthRefreshTokenService $authRefreshTokenService
      */
-    public function login(): JsonResponse
+    public function __construct(
+        IAuthLoginService        $authLoginService,
+        IAuthMyUserService       $authMyUserService,
+        IAuthRefreshTokenService $authRefreshTokenService
+    )
     {
-        $credentials = request(['email', 'password']);
+        $this->authLoginService = $authLoginService;
+        $this->authMyUserService = $authMyUserService;
+        $this->authRefreshTokenService = $authRefreshTokenService;
+    }
 
-        if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+    public function login(AuthLoginRequest $request): Response
+    {
+        try {
+            $data_login = $this->authLoginService->login($request);
+            return BaseResponse::builder()
+                ->setMessage('Successfully login!')
+                ->setData($data_login)
+                ->response();
+
+        } catch (SystemDefaultException $exception) {
+            return $exception->response();
         }
-
-        return $this->respondWithToken($token);
     }
 
     /**
      * Get the authenticated User.
      *
-     * @return JsonResponse
+     * @return Response
      */
-    public function me(): JsonResponse
+    public function me(): Response
     {
-        return response()->json(auth()->user());
+        try {
+            $data_my_user = $this->authMyUserService->getMyUser();
+            return BaseResponse::builder()
+                ->setMessage('Successfully!')
+                ->setData($data_my_user)
+                ->response();
+
+        } catch (SystemDefaultException $exception) {
+            return $exception->response();
+        }
     }
 
-    /**
-     * Log the user out (Invalidate the token).
-     *
-     * @return JsonResponse
-     */
-    public function logout()
+    public function logout(): Response
     {
         auth()->logout();
-
-        return response()->json(['message' => 'Successfully logged out']);
+        return BaseResponse::builder()
+            ->setData(false)
+            ->setMessage('Successfully logged out')
+            ->response();
     }
 
-    /**
-     * Refresh a token.
-     *
-     * @return JsonResponse
-     */
-    public function refresh(): JsonResponse
+    public function refresh(): Response
     {
-        return $this->respondWithToken(auth()->refresh());
-    }
+        try {
+            $data_refresh_token = $this->authRefreshTokenService->refreshToken();
+            return BaseResponse::builder()
+                ->setMessage('Successfully token refresh!')
+                ->setData($data_refresh_token)
+                ->response();
 
-    /**
-     * Get the token array structure.
-     *
-     * @param string $token
-     *
-     * @return JsonResponse
-     */
-    protected function respondWithToken(string $token): JsonResponse
-    {
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
-        ]);
+        } catch (SystemDefaultException $exception) {
+            return $exception->response();
+        }
     }
 }

@@ -30,9 +30,13 @@ class LoginTest extends TestCase
         $this->assertAuthenticatedAs($user, 'api');
 
         $response->assertJsonStructure([
-            'access_token',
-            'token_type',
-            'expires_in',
+            'statusCode',
+            'data' => [
+                'access_token',
+                'token_type',
+                'expires_in',
+            ],
+            'message',
         ]);
     }
 }
