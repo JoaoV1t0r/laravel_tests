@@ -2,69 +2,117 @@
 
 namespace App\Domains\Auth\Models;
 
-use App\Models\Role;
-use App\Models\User;
 use App\Support\Models\Model;
-use Illuminate\Database\Eloquent\Collection;
-use JetBrains\PhpStorm\Pure;
 
 class MyUserModel extends Model
 {
-    protected User $data_user;
-    protected Role $me_role;
-    protected Collection $my_permissions;
+    protected string $uuid;
+    protected string $name;
+    protected string $email;
+    protected string $email_verified_at;
+    protected string $created_at;
+    protected string $updated_at;
 
-    #[Pure] public static function builder(): static
+    public static function builder(): static
     {
         return new MyUserModel();
     }
 
     /**
-     * @return User
+     * @return string
      */
-    public function getDataUser(): User
+    public function getUuid(): string
     {
-        return $this->data_user;
+        return $this->uuid;
     }
 
     /**
-     * @param User $data_user
+     * @param string $uuid
      */
-    public function setDataUser(User $data_user): void
+    public function setUuid(string $uuid): void
     {
-        $this->data_user = $data_user;
+        $this->uuid = $uuid;
     }
 
     /**
-     * @return Role
+     * @return string
      */
-    public function getMeRole(): Role
+    public function getName(): string
     {
-        return $this->me_role;
+        return $this->name;
     }
 
     /**
-     * @param Role $me_role
+     * @param string $name
      */
-    public function setMeRole(Role $me_role): void
+    public function setName(string $name): void
     {
-        $this->me_role = $me_role;
+        $this->name = $name;
     }
 
     /**
-     * @return Collection
+     * @return string
      */
-    public function getMyPermissions(): Collection
+    public function getEmail(): string
     {
-        return $this->my_permissions;
+        return $this->email;
     }
 
     /**
-     * @param Collection $my_permissions
+     * @param string $email
      */
-    public function setMyPermissions(Collection $my_permissions): void
+    public function setEmail(string $email): void
     {
-        $this->my_permissions = $my_permissions;
+        $this->email = $email;
     }
+
+    /**
+     * @return string
+     */
+    public function getEmailVerifiedAt(): string
+    {
+        return $this->email_verified_at;
+    }
+
+    /**
+     * @param string $email_verified_at
+     */
+    public function setEmailVerifiedAt(string $email_verified_at): void
+    {
+        $this->email_verified_at = $email_verified_at;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreatedAt(): string
+    {
+        return $this->created_at;
+    }
+
+    /**
+     * @param string $created_at
+     */
+    public function setCreatedAt(string $created_at): void
+    {
+        $this->created_at = $created_at;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUpdatedAt(): string
+    {
+        return $this->updated_at;
+    }
+
+    /**
+     * @param string $updated_at
+     */
+    public function setUpdatedAt(string $updated_at): void
+    {
+        $this->updated_at = $updated_at;
+    }
+
 
 }

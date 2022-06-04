@@ -26,8 +26,7 @@ class AuthController extends Controller
         IAuthLoginService        $authLoginService,
         IAuthMyUserService       $authMyUserService,
         IAuthRefreshTokenService $authRefreshTokenService
-    )
-    {
+    ) {
         $this->authLoginService = $authLoginService;
         $this->authMyUserService = $authMyUserService;
         $this->authRefreshTokenService = $authRefreshTokenService;
@@ -41,7 +40,6 @@ class AuthController extends Controller
                 ->setMessage('Successfully login!')
                 ->setData($data_login)
                 ->response();
-
         } catch (SystemDefaultException $exception) {
             return $exception->response();
         }
@@ -60,7 +58,6 @@ class AuthController extends Controller
                 ->setMessage('Successfully!')
                 ->setData($data_my_user)
                 ->response();
-
         } catch (SystemDefaultException $exception) {
             return $exception->response();
         }
@@ -83,7 +80,6 @@ class AuthController extends Controller
                 ->setMessage('Successfully token refresh!')
                 ->setData($data_refresh_token)
                 ->response();
-
         } catch (SystemDefaultException $exception) {
             return $exception->response();
         }

@@ -4,9 +4,6 @@ namespace App\Domains\Auth\Services\Concrete;
 
 use App\Domains\Auth\Models\MyUserModel;
 use App\Domains\Auth\Services\Abstract\IAuthMyUserService;
-use App\Models\Permission;
-use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
 use JetBrains\PhpStorm\Pure;
 
 class AuthMyUserService implements IAuthMyUserService
@@ -27,18 +24,12 @@ class AuthMyUserService implements IAuthMyUserService
 
     private function mapMyUser()
     {
-        $this->myUser->setDataUser(User::find(auth()->user()->id));
-        $this->myUser->setMeRole(auth()->user()->role);
-        $this->myUser->setMyPermissions($this->getPermissions());
+        $this->myUser->setUuid(auth()->user()->uuid);
+        $this->myUser->setName(auth()->user()->name);
+        $this->myUser->setEmail(auth()->user()->email);
+        $this->myUser->setEmailVerifiedAt(auth()->user()->email_verified_at);
+        $this->myUser->setCreatedAt(auth()->user()->created_at);
+        $this->myUser->setUpdatedAt(auth()->user()->updated_at);
 
-    }
-
-    private function getPermissions(): Collection
-    {
-        $permissions = new Collection();
-        foreach (auth()->user()->permissions as $permission_role):
-            $permissions->add(Permission::find($permission_role->permission_id));
-        endforeach;
-        return $permissions;
     }
 }

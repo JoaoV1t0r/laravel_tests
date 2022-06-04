@@ -39,4 +39,81 @@ class LoginTest extends TestCase
             'message',
         ]);
     }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function it_should_login_fail(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->post('/api/login', [
+            'email' => $user->email,
+            'password' => 'wrong_password',
+        ]);
+
+        $response->assertStatus(400);
+
+        $this->assertGuest('api');
+
+        $response->assertJsonStructure([
+            'statusCode',
+            'message',
+        ]);
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function it_should_login_fail_when_email_not_exists(): void
+    {
+        $response = $this->post('/api/login', [
+            'email' => 'notexists@test.com',
+            'password' => 'password',
+        ]);
+
+        $response->assertStatus(400);
+
+        $this->assertGuest('api');
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function it_should_login_fail_when_email_is_not_valid(): void
+    {
+        $response = $this->post('/api/login', [
+            'email' => 'notvalidemail',
+            'password' => 'password',
+        ]);
+
+        $response->assertStatus(400);
+
+        $this->assertGuest('api');
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function it_should_login_fail_when_password_is_not_valid(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->post('/api/login', [
+            'email' => $user->email,
+            'password' => 'wrong_password',
+        ]);
+
+        $response->assertStatus(400);
+
+        $this->assertGuest('api');
+    }
 }
