@@ -5,11 +5,12 @@ services:
     build:
       context: .
       dockerfile: ./docker/Dockerfile
-    restart: unless-stopped
     volumes:
       - ./:/app
     depends_on: 
       - redis
+      - mysql
+      - mailhog
     networks: 
       - application
   nginx:

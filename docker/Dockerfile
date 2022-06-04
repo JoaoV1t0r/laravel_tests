@@ -24,6 +24,11 @@ RUN curl -sS https://getcomposer.org/installer -o composer-setup.php \
     && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
     && rm -rf composer-setup.php
 
+RUN apk del --purge \
+    libpng-dev \
+    libjpeg \
+    libzip \
+    libzip-dev
 
 WORKDIR /app
 COPY . /app
@@ -34,6 +39,6 @@ RUN php artisan route:clear
 RUN php artisan optimize
 RUN php artisan config:clear
 RUN chmod -R 777 storage bootstrap/cache
-RUN apk del --purge .phpize_deps && rm -rf /var/cache/apk/*
+RUN apk del --purge .phpize_deps $PHPIZE_DEPS && rm -rf /var/cache/apk/*
 CMD php-fpm
 EXPOSE 9000
