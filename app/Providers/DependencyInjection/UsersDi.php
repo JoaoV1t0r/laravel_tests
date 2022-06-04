@@ -15,6 +15,8 @@ use App\Domains\Users\Services\Concrete\UsersListingService;
 use App\Infra\Database\Repositories\Concrete\UserRepository;
 use App\Domains\Users\Services\Abstract\IUsersListingService;
 use App\Infra\Database\Repositories\Abstract\IUserRepository;
+use App\Domains\Users\Services\Concrete\UsersVerifyEmailService;
+use App\Domains\Users\Services\Abstract\IUsersVerifyEmailService;
 
 class UsersDi extends DependencyInjection
 {
@@ -25,6 +27,7 @@ class UsersDi extends DependencyInjection
             [IUsersListingService::class, UsersListingService::class],
             [IUsersUpdateService::class, UsersUpdateService::class],
             [IUsersDeleteService::class, UsersDeleteService::class],
+            [IUsersVerifyEmailService::class, UsersVerifyEmailService::class],
         ];
     }
 

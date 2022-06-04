@@ -14,6 +14,7 @@ use App\Domains\Users\Services\Abstract\IUsersStoreService;
 use App\Domains\Users\Services\Abstract\IUsersDeleteService;
 use App\Domains\Users\Services\Abstract\IUsersUpdateService;
 use App\Domains\Users\Services\Abstract\IUsersListingService;
+use App\Domains\Users\Services\Abstract\IUsersVerifyEmailService;
 
 class UserController extends Controller
 {
@@ -21,23 +22,27 @@ class UserController extends Controller
     private IUsersStoreService $usersStoreService;
     private IUsersUpdateService $usersUpdateService;
     private IUsersDeleteService $usersDeleteService;
+    private IUsersVerifyEmailService $usersVerifyEmailService;
 
     /**
      * @param IUsersListingService $usersListingService
      * @param IUsersStoreService $usersStoreService
      * @param IUsersUpdateService $usersUpdateService
      * @param IUsersDeleteService $usersDeleteService
+     * @param IUsersVerifyEmailService $usersVerifyEmailService
      */
     public function __construct(
         IUsersListingService $usersListingService,
         IUsersStoreService   $usersStoreService,
         IUsersUpdateService  $usersUpdateService,
         IUsersDeleteService  $usersDeleteService,
+        IUsersVerifyEmailService $usersVerifyEmailService,
     ) {
         $this->usersListingService = $usersListingService;
         $this->usersStoreService = $usersStoreService;
         $this->usersUpdateService = $usersUpdateService;
         $this->usersDeleteService = $usersDeleteService;
+        $this->usersVerifyEmailService = $usersVerifyEmailService;
     }
 
 
@@ -88,6 +93,20 @@ class UserController extends Controller
             $this->usersDeleteService->userDelete($request);
             return BaseResponse::builder()
                 ->setMessage('Successfully delete user!')
+                ->setData(true)
+                ->setStatusCode(202)
+                ->response();
+        } catch (SystemDefaultException $exception) {
+            return $exception->response();
+        }
+    }
+
+    public function verifyEmail(string $userUuid): Response
+    {
+        try {
+            $this->usersVerifyEmailService->verifyEmail($userUuid);
+            return BaseResponse::builder()
+                ->setMessage('Successfully verify email!')
                 ->setData(true)
                 ->setStatusCode(202)
                 ->response();

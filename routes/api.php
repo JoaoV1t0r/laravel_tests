@@ -11,9 +11,7 @@ Route::middleware(['jwt'])->group(function () {
     Route::prefix('users/')->group(function () {
         Route::get('me', [AuthController::class, 'me'])->name('user.me');
         Route::post('', [UserController::class, 'store'])->name('users.store')->withoutMiddleware(['jwt']);
-        Route::get('users/confirm-email/{userUuid}', function () {
-            echo route('users.confirm_email', ['userUuid' => 'lihv'], true);
-        })->name('users.confirm_email')->withoutMiddleware(['jwt']);
+        Route::get('confirm-email/{userUuid}', [UserController::class, 'verifyEmail'])->name('users.confirm_email')->withoutMiddleware(['jwt'])->where('userUuid', '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}');
         Route::put('', [UserController::class, 'update'])->name('users.update');
         Route::delete('{userUuid}', [UserController::class, 'delete'])->name('users.delete');
     });

@@ -36,5 +36,4 @@ class LogoutTest extends TestCase
 
         $response->assertUnauthorized();
     }
-
 }

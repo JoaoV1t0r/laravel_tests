@@ -116,4 +116,46 @@ class LoginTest extends TestCase
 
         $this->assertGuest('api');
     }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function it_should_login_fail_when_user_is_not_active(): void
+    {
+        $user = User::factory()->create([
+            'is_active' => false,
+        ]);
+
+        $response = $this->post('/api/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $response->assertStatus(400);
+
+        $this->assertGuest('api');
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function it_should_login_fail_when_user_is_not_verified(): void
+    {
+        $user = User::factory()->create([
+            'email_verified_at' => null,
+        ]);
+
+        $response = $this->post('/api/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $response->assertStatus(400);
+
+        $this->assertGuest('api');
+    }
 }
