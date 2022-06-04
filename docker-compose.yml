@@ -1,0 +1,70 @@
+version: "3.7"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ./:/app
+    depends_on: 
+      - redis
+    networks: 
+      - application
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports: 
+      - "8000:80"
+    volumes: 
+      - ./:/app
+      - ./docker/nginx/:/etc/nginx/conf.d/
+    networks: 
+      - application
+  mysql:
+    image: mysql:latest
+    restart: unless-stopped
+    environment: 
+      MYSQL_DATABASE: app
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: root
+      MYSQL_USER: vitor
+    volumes: 
+      - dbdata:/var/lib/mysql
+    ports: 
+      - "3306:3306"
+    networks: 
+      - application
+  horizon:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    restart: unless-stopped
+    command: "php artisan horizon"
+    volumes: 
+      - ./:/app
+    depends_on: 
+      - redis
+      - app
+    networks: 
+        - application
+  redis:
+    image: redis:alpine
+    restart: unless-stopped
+    networks: 
+      - application
+  mailhog:
+    image: mailhog/mailhog:latest
+    restart: always
+    ports:
+      - 1025:1025
+      - 8025:8025
+    networks:
+      - application
+networks: 
+  application:
+    driver: bridge
+volumes:
+  dbdata:
+    driver: local

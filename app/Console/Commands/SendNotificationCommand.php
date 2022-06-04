@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Jobs\User\WelcomeNotificationJob;
 use App\Models\User;
+use App\Notifications\User\UserConfirmEmailNotification;
 use Illuminate\Console\Command;
 use App\Notifications\UserRegistered;
 use App\Notifications\WelcomeNotification;
@@ -34,7 +35,7 @@ class SendNotificationCommand extends Command
     public function handle()
     {
         $this->withProgressBar(User::all(), function ($user) {
-            WelcomeNotificationJob::dispatch($user);
+            $user->notify(new UserConfirmEmailNotification($user));
         });
     }
 }
