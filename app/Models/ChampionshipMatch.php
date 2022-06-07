@@ -27,4 +27,24 @@ class ChampionshipMatch extends Model
         'opponent_id',
         'deleted_at',
     ];
+
+    public function championship()
+    {
+        return $this->belongsTo(Championship::class);
+    }
+
+    public function team()
+    {
+        return $this->belongsTo(Team::class);
+    }
+
+    public function opponent()
+    {
+        return $this->belongsTo(Team::class);
+    }
+
+    public function matchResult()
+    {
+        return $this->hasOne(MatchResult::class);
+    }
 }

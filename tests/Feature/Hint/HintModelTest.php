@@ -57,7 +57,9 @@ class HintModelTest extends TestCase
      */
     public function it_should_hint_model_has_relationships_with_championship_match_model()
     {
-        $this->assertTrue(method_exists('App\Models\Hint', 'championshipMatch'));
+        $relashionship = (new \App\Models\Hint())->championshipMatch();
+
+        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Relations\BelongsTo::class, $relashionship);
     }
 
     /**
@@ -65,6 +67,8 @@ class HintModelTest extends TestCase
      */
     public function it_should_hint_model_has_relationships_with_championship_user_model()
     {
-        $this->assertTrue(method_exists('App\Models\Hint', 'championshipUser'));
+        $relashionship = (new \App\Models\Hint())->championshipUser();
+
+        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Relations\BelongsTo::class, $relashionship);
     }
 }

@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Championship;
+use App\Models\ChampionshipUser;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * @property int $id
@@ -29,4 +31,14 @@ class ChampionshipChart extends Model
         'user_assertions',
         'deleted_at',
     ];
+
+    public function championship()
+    {
+        return $this->belongsTo(Championship::class);
+    }
+
+    public function championshipUser()
+    {
+        return $this->belongsTo(ChampionshipUser::class);
+    }
 }

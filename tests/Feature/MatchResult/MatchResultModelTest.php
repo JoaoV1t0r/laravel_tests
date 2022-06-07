@@ -57,6 +57,8 @@ class MatchResultModelTest extends TestCase
      */
     public function it_should_match_result_model_has_relationships_with_championship_match_model()
     {
-        $this->assertTrue(method_exists('App\Models\MatchResult', 'championshipMatch'));
+        $relashionship = (new \App\Models\MatchResult())->championshipMatch();
+
+        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Relations\BelongsTo::class, $relashionship);
     }
 }

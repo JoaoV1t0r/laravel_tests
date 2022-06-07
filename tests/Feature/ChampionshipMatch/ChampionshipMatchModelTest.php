@@ -57,7 +57,9 @@ class ChampionshipMatchModelTest extends TestCase
      */
     public function it_should_championship_match_model_has_relationships_with_championship_model()
     {
-        $this->assertTrue(method_exists('App\Models\ChampionshipMatch', 'championship'));
+        $relashionship = (new \App\Models\ChampionshipMatch())->championship();
+
+        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Relations\BelongsTo::class, $relashionship);
     }
 
     /**
@@ -65,7 +67,9 @@ class ChampionshipMatchModelTest extends TestCase
      */
     public function it_should_championship_match_model_has_relationships_with_match_result_model()
     {
-        $this->assertTrue(method_exists('App\Models\ChampionshipMatch', 'matchResults'));
+        $relashionship = (new \App\Models\ChampionshipMatch())->matchResult();
+
+        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Relations\HasOne::class, $relashionship);
     }
 
     /**
@@ -73,7 +77,9 @@ class ChampionshipMatchModelTest extends TestCase
      */
     public function it_should_championship_match_model_has_relationships_with_team_model()
     {
-        $this->assertTrue(method_exists('App\Models\ChampionshipMatch', 'team'));
+        $relashionship = (new \App\Models\ChampionshipMatch())->team();
+
+        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Relations\BelongsTo::class, $relashionship);
     }
 
     /**
@@ -81,6 +87,8 @@ class ChampionshipMatchModelTest extends TestCase
      */
     public function it_should_championship_match_model_has_relationships_with_opponent_model()
     {
-        $this->assertTrue(method_exists('App\Models\ChampionshipMatch', 'opponent'));
+        $relashionship = (new \App\Models\ChampionshipMatch())->opponent();
+
+        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Relations\BelongsTo::class, $relashionship);
     }
 }

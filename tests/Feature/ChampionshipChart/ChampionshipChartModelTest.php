@@ -57,6 +57,18 @@ class ChampionshipChartModelTest extends TestCase
      */
     public function it_should_championship_chart_model_has_relationships_with_championship_model()
     {
-        $this->assertTrue(method_exists('App\Models\ChampionshipChart', 'championship'));
+        $relation = (new \App\Models\ChampionshipChart)->championship();
+
+        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Relations\BelongsTo::class, $relation);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_championship_chart_model_has_relationships_with_championship_user_model()
+    {
+        $relation = (new \App\Models\ChampionshipChart)->championshipUser();
+
+        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Relations\BelongsTo::class, $relation);
     }
 }

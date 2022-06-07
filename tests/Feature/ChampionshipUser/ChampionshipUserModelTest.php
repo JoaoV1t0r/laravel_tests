@@ -57,7 +57,9 @@ class ChampionshipUserModelTest extends TestCase
      */
     public function it_should_championship_user_model_has_relationships_with_championship_model()
     {
-        $this->assertTrue(method_exists('App\Models\ChampionshipUser', 'championship'));
+        $relashionship = (new \App\Models\ChampionshipUser())->championship();
+
+        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Relations\BelongsTo::class, $relashionship);
     }
 
     /**
@@ -65,6 +67,8 @@ class ChampionshipUserModelTest extends TestCase
      */
     public function it_should_championship_user_model_has_relationships_with_user_model()
     {
-        $this->assertTrue(method_exists('App\Models\ChampionshipUser', 'user'));
+        $relashionship = (new \App\Models\ChampionshipUser())->user();
+
+        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Relations\BelongsTo::class, get_class($relashionship));
     }
 }
