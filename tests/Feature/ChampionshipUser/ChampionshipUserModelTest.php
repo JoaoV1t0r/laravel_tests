@@ -69,6 +69,6 @@ class ChampionshipUserModelTest extends TestCase
     {
         $relashionship = (new \App\Models\ChampionshipUser())->user();
 
-        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Relations\BelongsTo::class, get_class($relashionship));
+        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Relations\BelongsTo::class, $relashionship);
     }
 }

@@ -5,11 +5,12 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Championship>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Team>
  */
-class ChampionshipFactory extends Factory
+class TeamFactory extends Factory
 {
-    protected $model = \App\Models\Championship::class;
+    protected $model = \App\Models\Team::class;
+
     /**
      * Define the model's default state.
      *
@@ -18,7 +19,8 @@ class ChampionshipFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->company(),
+            'name' => $this->faker->name,
+            'emblem' => $this->faker->imageUrl(100, 100),
         ];
     }
 }

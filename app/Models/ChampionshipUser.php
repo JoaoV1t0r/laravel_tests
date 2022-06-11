@@ -25,4 +25,14 @@ class ChampionshipUser extends Model
         'user_id',
         'deleted_at',
     ];
+
+    public function championship()
+    {
+        return $this->belongsTo(Championship::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
