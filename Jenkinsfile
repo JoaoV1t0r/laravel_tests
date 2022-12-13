@@ -17,7 +17,11 @@ pipeline{
                     sh 'echo DB_DATABASE=${DB_DATABASE} >> .env'
                     sh 'echo DB_PASSWORD=${DB_PASSWORD} >> .env'
                     sh 'cp .env .env.testing'
-                    dockerapp = docker.build("dockerapp:${env.BUILD_ID}", '-f ./docker/Dockerfile .')
+                    dockerapp = docker.build("laravel:${env.BUILD_ID}", '-f ./docker/Dockerfile .')
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
+                        dockerapp.push('laravel:latest')
+                        dockerapp.push('${env.BUILD_ID}')
+                    }
                 }
             }
         }
