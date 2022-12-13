@@ -23,7 +23,7 @@ pipeline{
         }
         stage('Test'){
             steps{
-                echo 'Testing the project'
+                sh 'php artisan test'
             }
         }
         stage('Deploy'){
