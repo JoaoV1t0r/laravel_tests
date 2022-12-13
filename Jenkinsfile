@@ -17,7 +17,7 @@ pipeline{
                     sh 'echo DB_DATABASE=${DB_DATABASE} >> .env'
                     sh 'echo DB_PASSWORD=${DB_PASSWORD} >> .env'
                     sh 'cp .env .env.testing'
-                    dockerapp = docker.build("dockerapp:latest", '-f ./docker/Dockerfile .')
+                    dockerapp = docker.build("dockerapp:${env.BUILD_ID}", '-f ./docker/Dockerfile .')
                 }
             }
         }
