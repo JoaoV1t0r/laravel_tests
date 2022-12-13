@@ -18,7 +18,13 @@ pipeline{
                     sh 'echo DB_PASSWORD=${DB_PASSWORD} >> .env'
                     sh 'cp .env .env.testing'
                     dockerapp = docker.build("laravel:${env.BUILD_ID}", '-f ./docker/Dockerfile .')
-                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
+                }
+            }
+        }
+        stage('push image'){
+            steps{
+                script{
+                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
                         dockerapp.push('laravel:latest')
                         dockerapp.push('${env.BUILD_ID}')
                     }
