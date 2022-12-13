@@ -5,7 +5,7 @@ pipeline{
             steps{
                 echo 'Building the project'
                 script{
-                    dockerapp = docker.build("dockerapp:latest", '-f ./Docker/Dockerfile .')
+                    dockerapp = docker.build("dockerapp:latest", '-f ./docker/Dockerfile .')
                 }
             }
         }
