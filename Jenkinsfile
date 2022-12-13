@@ -26,7 +26,7 @@ pipeline{
                 script{
                      docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
                         dockerapp.push('laravel:latest')
-                        dockerapp.push("v:${env.BUILD_ID}")
+                        // dockerapp.push("v:${env.BUILD_ID}")
                     }
                 }
             }
