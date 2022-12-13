@@ -17,7 +17,7 @@ pipeline{
                     sh 'echo DB_DATABASE=${DB_DATABASE} >> .env'
                     sh 'echo DB_PASSWORD=${DB_PASSWORD} >> .env'
                     sh 'cp .env .env.testing'
-                    dockerapp = docker.build("laravel_tests:${env.BUILD_ID}", '-f ./docker/Dockerfile .')
+                    dockerapp = docker.build("joaov1t0r/laravel_tests:${env.BUILD_ID}", '-f ./docker/Dockerfile .')
                 }
             }
         }
