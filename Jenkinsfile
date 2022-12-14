@@ -17,7 +17,6 @@ pipeline{
                     sh 'echo DB_DATABASE=${DB_DATABASE} >> .env'
                     sh 'echo DB_PASSWORD=${DB_PASSWORD} >> .env'
                     sh 'cp .env .env.testing'
-                    sh "echo ${env.BUILD_ID - 1}"
                     // dockerapp = docker.build("joaov1t0r/laravel_tests:${env.BUILD_ID}", '-f ./docker/Dockerfile .')
                 }
             }
@@ -35,10 +34,11 @@ pipeline{
         stage('Deploy'){
             steps{
                 echo 'Deploying the project'
-                // script{
-                //     sh "docker stop laravel_tests"
-                //     sh "docker run -d -p 8000:80 --name laravel_tests joaov1t0r/laravel_tests:${env.BUILD_ID}"
-                // }
+                script{
+                    sh "docker stop laravel_tests > /dev/null 2>&1 || true"
+                    sh 'docker container prune -f > /dev/null 2>&1 || true'
+                    sh "docker run -d -p 8000:80 --name laravel_tests joaov1t0r/laravel_tests:${env.BUILD_ID}"
+                }
             }
         }
     }
