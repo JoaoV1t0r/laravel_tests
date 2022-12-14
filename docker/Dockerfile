@@ -46,6 +46,7 @@ WORKDIR /app
 COPY . /app
 RUN composer install
 RUN php artisan key:generate \
+    && php artisan jwt:secret \
     && php artisan cache:clear \
     && php artisan route:clear\
     && php artisan optimize\
