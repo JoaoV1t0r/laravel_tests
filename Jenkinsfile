@@ -39,7 +39,7 @@ pipeline{
         stage('Deploy'){
             steps{
                 echo 'Deploying the project'
-                docker.runAfter(delay: 10, image: 'joaov1t0r/laravel_tests:${env.BUILD_ID}', args: '-p 8000:80 -d --name laravel joaov1t0r/laravel_tests:${env.BUILD_ID}') {
+                docker.runAfter(delay: 10, image: "joaov1t0r/laravel_tests:${env.BUILD_ID}", args: "-p 8000:80 -d --name laravel joaov1t0r/laravel_tests:${env.BUILD_ID}") {
                     // sh ''
                 }
             }
