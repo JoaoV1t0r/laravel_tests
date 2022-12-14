@@ -21,21 +21,21 @@ pipeline{
                 }
             }
         }
-        stage('push image'){
-            steps{
-                script{
-                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                        dockerapp.push('latest')
-                        dockerapp.push("${env.BUILD_ID}")
-                    }
-                }
-            }
-        }
+        // stage('push image'){
+        //     steps{
+        //         script{
+        //              docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+        //                 dockerapp.push('latest')
+        //                 dockerapp.push("${env.BUILD_ID}")
+        //             }
+        //         }
+        //     }
+        // }
         stage('Deploy'){
             steps{
                 echo 'Deploying the project'
                 script{
-                    sh 'docker stop $(docker ps | grep laravel_tests | awk /''{print$1}/'')'
+                    sh 'docker stop $(docker ps | grep laravel_tests | awk '+ '{print$1}' + ')'
                     sh "docker run -d -p 8000:80 --name laravel_tests:${env.BUILD_ID} joaov1t0r/laravel_tests:${env.BUILD_ID}"
                 }
             }
