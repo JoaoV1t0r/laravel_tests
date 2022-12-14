@@ -35,7 +35,8 @@ pipeline{
             steps{
                 echo 'Deploying the project'
                 script{
-                    sh 'docker stop $(docker ps | grep laravel_tests | awk '+ '{print$1}' + ')'
+                    containerId = sh(script: 'docker ps | grep laravel_tests | awk '+ '{print$1}' + '', returnStdout: true).trim()
+                    sh "docker stop ${containerId}"
                     sh "docker run -d -p 8000:80 --name laravel_tests:${env.BUILD_ID} joaov1t0r/laravel_tests:${env.BUILD_ID}"
                 }
             }
