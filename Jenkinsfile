@@ -31,16 +31,11 @@ pipeline{
                 }
             }
         }
-        // stage('Test'){
-        //     steps{
-        //         // sh 'php artisan test'
-        //     }
-        // }
         stage('Deploy'){
             steps{
                 echo 'Deploying the project'
                 script{
-                    docker.image("joaov1t0r/laravel_tests:${env.BUILD_ID}").withRun("-p 8000:80")
+                    docker.image("joaov1t0r/laravel_tests:${env.BUILD_ID}").withRun('-p 8000:80')
                 }
             }
         }
