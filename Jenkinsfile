@@ -36,7 +36,7 @@ pipeline{
                 echo 'Deploying the project'
                 script{
                     docker.image("joaov1t0r/laravel_tests:${env.BUILD_ID}").withRun('-p 8000:80'){
-                        sh 'php artisan config:clear'
+                        sh ''
                     }
                 }
             }
