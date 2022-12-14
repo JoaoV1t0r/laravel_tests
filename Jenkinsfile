@@ -35,9 +35,7 @@ pipeline{
             steps{
                 echo 'Deploying the project'
                 script{
-                    docker.image("joaov1t0r/laravel_tests:${env.BUILD_ID}").withRun('-p 8000:80'){
-                        sh ''
-                    }
+                    sh "docker run -d -p 8000:80 --name laravel joaov1t0r/laravel_tests:${env.BUILD_ID}"
                 }
             }
         }
