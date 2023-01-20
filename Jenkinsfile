@@ -3,6 +3,7 @@ pipeline{
     stages{
         stage('Build'){
             environment {
+                DB_CONNECTION = "mysql"
                 DB_HOST = "191.101.235.18"
                 DB_DATABASE = "laravel_tests"
                 DB_USERNAME = "vitor"
@@ -12,6 +13,7 @@ pipeline{
                 echo 'Building the project.'
                 script{
                     sh 'cp .env.example .env'
+                    sh 'echo DB_CONNECTION=${DB_CONNECTION} >> .env'
                     sh 'echo DB_HOST=${DB_HOST} >> .env'
                     sh 'echo DB_USERNAME=${DB_USERNAME} >> .env'
                     sh 'echo DB_DATABASE=${DB_DATABASE} >> .env'
