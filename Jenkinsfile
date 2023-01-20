@@ -36,27 +36,19 @@ pipeline{
                     sh "docker exec laravel_tests_run_test_${env.BUILD_ID} php artisan test"
                     sh "docker stop laravel_tests_run_test_${env.BUILD_ID} > /dev/null 2>&1 || true"
                     sh 'docker container prune -f > /dev/null 2>&1 || true'
-                    // docker.runAfter(image: "joaov1t0r/laravel_tests:${env.BUILD_ID}", args: "-p 8000:80 -d") {
-                    //     sh "mkdir ./tests/Unit"
-                    //     sh "php artisan test"
-                    // }
-                //     dockerapp.inside{
-                //         sh "mkdir ./tests/Unit"
-                //         sh "php artisan test"
-                //     }
                 }
             }
         }
-        // stage('Push Image'){
-        //     steps{
-        //         script{
-        //              docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-        //                 dockerapp.push('latest')
-        //                 dockerapp.push("${env.BUILD_ID}")
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Push Image'){
+            steps{
+                script{
+                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                        dockerapp.push('latest')
+                        dockerapp.push("${env.BUILD_ID}")
+                    }
+                }
+            }
+        }
         stage('Deploy'){
             steps{
                 echo 'Deploying the project'
