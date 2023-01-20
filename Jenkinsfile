@@ -24,16 +24,16 @@ pipeline{
         stage('Run Tests'){
             steps{
                 echo 'Running the tests'
-                docker.runAfter(delay: 10, image: "joaov1t0r/laravel_tests:${env.BUILD_ID}", args: "-p 8000:80 -d") {
-                    sh "mkdir ./tests/Unit"
-                    sh "php artisan test"
-                }
-                // script{
+                script{
+                    docker.runAfter(delay: 10, image: "joaov1t0r/laravel_tests:${env.BUILD_ID}", args: "-p 8000:80 -d") {
+                        sh "mkdir ./tests/Unit"
+                        sh "php artisan test"
+                    }
                 //     dockerapp.inside{
                 //         sh "mkdir ./tests/Unit"
                 //         sh "php artisan test"
                 //     }
-                // }
+                }
             }
         }
         // stage('Push Image'){
