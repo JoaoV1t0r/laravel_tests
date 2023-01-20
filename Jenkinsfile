@@ -24,9 +24,11 @@ pipeline{
         stage('Run Tests'){
             steps{
                 echo 'Running the tests'
-                dockerapp.inside{
-                    sh "mkdir ./tests/Unit"
-                    sh "php artisan test"
+                script{
+                    dockerapp.inside{
+                        sh "mkdir ./tests/Unit"
+                        sh "php artisan test"
+                    }
                 }
             }
         }
