@@ -18,7 +18,6 @@ pipeline{
                     sh 'echo DB_USERNAME=${DB_USERNAME} >> .env'
                     sh 'echo DB_DATABASE=${DB_DATABASE} >> .env'
                     sh 'echo DB_PASSWORD=${DB_PASSWORD} >> .env'
-                    sh 'cp .env .env.testing'
                     dockerapp = docker.build("joaov1t0r/laravel_tests:${env.BUILD_ID}", '-f ./docker/Dockerfile .')
                 }
             }
@@ -29,8 +28,8 @@ pipeline{
                 script{
                     sh "docker run -d --name laravel_tests_run_test_${env.BUILD_ID} joaov1t0r/laravel_tests:${env.BUILD_ID}"
                     sh "docker exec laravel_tests_run_test_${env.BUILD_ID} php artisan optimize"
+                    sh 'cp .env .env.testing'
                     sh "docker exec laravel_tests_run_test_${env.BUILD_ID} php artisan optimize --env=testing"
-                    sh "docker exec laravel_tests_run_test_${env.BUILD_ID} php artisan jwt:secret --env=testing"
                     sh "docker exec laravel_tests_run_test_${env.BUILD_ID} php artisan migrate"
                     sh "docker exec laravel_tests_run_test_${env.BUILD_ID} php artisan db:seed"
                     sh "docker exec laravel_tests_run_test_${env.BUILD_ID} mkdir ./tests/Unit"
