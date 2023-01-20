@@ -32,7 +32,7 @@ pipeline{
                     sh "docker exec laravel_tests_run_test_${env.BUILD_ID} php artisan optimize --env=testing"
                     sh "docker exec laravel_tests_run_test_${env.BUILD_ID} php artisan migrate"
                     sh "docker exec laravel_tests_run_test_${env.BUILD_ID} php artisan db:seed"
-                    // sh "docker exec laravel_tests_run_test mkdir ./tests/Unit"
+                    sh "docker exec laravel_tests_run_test_${env.BUILD_ID} mkdir ./tests/Unit"
                     sh "docker exec laravel_tests_run_test_${env.BUILD_ID} php artisan test"
                     sh "docker stop laravel_tests_run_test_${env.BUILD_ID} > /dev/null 2>&1 || true"
                     sh 'docker container prune -f > /dev/null 2>&1 || true'
