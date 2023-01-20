@@ -21,7 +21,7 @@ pipeline{
                 }
             }
         }
-        // stage('push image'){
+        // stage('Push Image'){
         //     steps{
         //         script{
         //              docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
@@ -40,6 +40,13 @@ pipeline{
                     sh "docker run -d -p 8000:80 --name laravel_tests joaov1t0r/laravel_tests:${env.BUILD_ID}"
                 }
             }
+        }
+    }
+    post{
+        always{
+            mail to: "joaovitor.silva2pereira@gmail.com",
+            subject: "Test Email",
+            body: "Test"
         }
     }
 }
