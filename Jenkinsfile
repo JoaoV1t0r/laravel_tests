@@ -35,7 +35,7 @@ pipeline{
             steps{
                 echo 'Deploying the project'
                 script{
-                    // sh "docker stop laravel_tests > /dev/null 2>&1 || true"
+                    sh "docker stop laravel_tests > /dev/null 2>&1 || true"
                     sh 'docker container prune -f > /dev/null 2>&1 || true'
                     sh "docker run -d -p 8000:80 --name laravel_tests joaov1t0r/laravel_tests:${env.BUILD_ID}"
                 }
