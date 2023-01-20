@@ -44,9 +44,11 @@ pipeline{
     }
     post{
         always{
-            mail to: "joaovitor.silva2pereira@gmail.com",
-            subject: "Test Email",
-            body: "Test"
+            mail( 
+                to: "joaovitor.silva2pereira@gmail.com",
+                subject: "Test Email",
+                body: "Test"
+            )
         }
     }
 }
