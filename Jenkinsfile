@@ -25,7 +25,7 @@ pipeline{
             steps{
                 echo 'Running the tests'
                 script{
-                    sh "docker run -d --name laravel_tests_run_test joaov1t0r/laravel_tests:${env.BUILD_ID}"
+                    sh "docker run -d --name laravel_tests_run_test_${env.BUILD_ID} joaov1t0r/laravel_tests:${env.BUILD_ID}"
                     sh "docker exec laravel_tests_run_test php artisan migrate --env=testing"
                     sh "docker exec laravel_tests_run_test php artisan db:seed --env=testing"
                     sh "docker exec laravel_tests_run_test mkdir ./tests/Unit"
