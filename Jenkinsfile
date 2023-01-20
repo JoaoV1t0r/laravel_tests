@@ -30,6 +30,7 @@ pipeline{
                     sh "docker run -d --name laravel_tests_run_test_${env.BUILD_ID} joaov1t0r/laravel_tests:${env.BUILD_ID}"
                     sh "docker exec laravel_tests_run_test_${env.BUILD_ID} php artisan optimize"
                     sh "docker exec laravel_tests_run_test_${env.BUILD_ID} php artisan optimize --env=testing"
+                    sh "docker exec laravel_tests_run_test_${env.BUILD_ID} php artisan jwt:secret --env=testing"
                     sh "docker exec laravel_tests_run_test_${env.BUILD_ID} php artisan migrate"
                     sh "docker exec laravel_tests_run_test_${env.BUILD_ID} php artisan db:seed"
                     sh "docker exec laravel_tests_run_test_${env.BUILD_ID} mkdir ./tests/Unit"
