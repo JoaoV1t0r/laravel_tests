@@ -3,10 +3,10 @@ pipeline{
     stages{
         stage('Build'){
             environment {
-                DB_HOST = "192.168.15.137"
-                DB_DATABASE = "mysql"
+                DB_HOST = "191.101.235.18"
+                DB_DATABASE = "laravel_tests"
                 DB_USERNAME = "vitor"
-                DB_PASSWORD = "12345"
+                DB_PASSWORD = 'O3gz3222xm&AjgLg4j$z&Wn'
             }
             steps{
                 echo 'Building the project.'
@@ -18,6 +18,18 @@ pipeline{
                     sh 'echo DB_PASSWORD=${DB_PASSWORD} >> .env'
                     sh 'cp .env .env.testing'
                     dockerapp = docker.build("joaov1t0r/laravel_tests:${env.BUILD_ID}", '-f ./docker/Dockerfile .')
+                }
+            }
+        }
+        stage('Run Tests'){
+            steps{
+                echo 'Running the tests'
+                script{
+                    sh "docker run -d --name laravel_tests_run_test joaov1t0r/laravel_tests:${env.BUILD_ID}"
+                    sh "docker exec laravel_tests_run_test php artisan migrate --env=testing"
+                    sh "docker exec laravel_tests_run_test php artisan db:seed --env=testing"
+                    sh "docker exec laravel_tests_run_test php artisan test"
+                    sh "docker stop laravel_tests_run_test > /dev/null 2>&1 || true"
                 }
             }
         }
