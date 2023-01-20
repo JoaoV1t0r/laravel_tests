@@ -24,7 +24,7 @@ pipeline{
         stage('Run Tests'){
             steps{
                 echo 'Running the tests'
-                docker.image("joaov1t0r/laravel_tests:${env.BUILD_ID}").withRun('-p 80:80') {
+                dockerapp.inside{
                     sh "mkdir ./tests/Unit"
                     sh "php artisan test"
                 }
