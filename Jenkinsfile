@@ -9,7 +9,7 @@ pipeline{
                 DB_PASSWORD = "12345"
             }
             steps{
-                echo 'Building the project Teste'
+                echo 'Building the project'
                 script{
                     sh 'cp .env.example .env'
                     sh 'echo DB_HOST=${DB_HOST} >> .env'
