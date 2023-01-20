@@ -24,7 +24,7 @@ pipeline{
         stage('Run Tests'){
             steps{
                 echo 'Running the tests'
-                docker.runAfter(delay: 10, image: "joaov1t0r/laravel_tests:${env.BUILD_ID}", args: "-p 80:80 -d --name laravel joaov1t0r/laravel_tests:${env.BUILD_ID}") {
+                docker.runAfter(delay: 10, image: 'joaov1t0r/laravel_tests:${env.BUILD_ID}', args: '-p 80:80 -d --name laravel joaov1t0r/laravel_tests:${env.BUILD_ID}') {
                     sh "mkdir ./tests/Unit"
                     sh "php artisan test"
                 }
