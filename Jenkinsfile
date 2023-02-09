@@ -4,7 +4,7 @@ pipeline{
         stage('Build'){
             environment {
                 DB_CONNECTION = "mysql"
-                DB_HOST = "191.101.235.18"
+                DB_HOST = credentials('DB_HOST')
                 DB_DATABASE = "laravel_tests"
                 DB_USERNAME = "vitor"
                 DB_PASSWORD = 'O3gz3222xm&AjgLg4j$z&Wn'
@@ -39,16 +39,16 @@ pipeline{
                 }
             }
         }
-        stage('Push Image'){
-            steps{
-                script{
-                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                        dockerapp.push('latest')
-                        dockerapp.push("${env.BUILD_ID}")
-                    }
-                }
-            }
-        }
+        // stage('Push Image'){
+        //     steps{
+        //         script{
+        //              docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+        //                 dockerapp.push('latest')
+        //                 dockerapp.push("${env.BUILD_ID}")
+        //             }
+        //         }
+        //     }
+        // }
         stage('Deploy'){
             steps{
                 echo 'Deploying the project'
